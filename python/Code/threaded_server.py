@@ -29,3 +29,10 @@ class ThreadedServer(object):
             except:
                 client.close()
                 return False
+
+if __name__ == "__main__":
+    port_num = 3997
+
+    server = ThreadedServer('localhost',port_num)
+    threading.Thread(target = server.listen).start()
+    print("paaaaaaapom")

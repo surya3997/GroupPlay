@@ -59,16 +59,9 @@ class Ui_List_Client(object):
 
         self.counter = 0
 
-        # for i in range(0, 6):
-        #     item = QtGui.QListWidgetItem()
-        #     self.listWidget.addItem(item)
-        #     item = self.listWidget.item(i)
-        #     item.setText(_translate("Form", "New Item " + str(i), None))
-
         self.setupServer("", 3997)
         threading.Thread(target = self.listen).start()
-        # self.listen()
-
+        
         self.listWidget.setSortingEnabled(__sortingEnabled)
 
     def setupServer(self, host, port):
@@ -84,7 +77,7 @@ class Ui_List_Client(object):
         while True:
             client, address = self.sock.accept()
             client.settimeout(160)
-            threading.Thread(target = self.listenToClient,args = (client,address)).start()
+            threading.Thread(target = self.listenToClient, args = (client,address)).start()
 
     def listenToClient(self, client, address):
         size = 1024
