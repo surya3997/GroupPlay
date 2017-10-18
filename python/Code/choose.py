@@ -22,7 +22,7 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Form(object):
+class Ui_Choose(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(355, 305)
@@ -46,4 +46,14 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Group Play", None))
         self.pushButton.setText(_translate("Form", "Server", None))
         self.pushButton_2.setText(_translate("Form", "Client", None))
+
+        self.pushButton.clicked.connect(self.buttonClicked)
+        self.pushButton_2.clicked.connect(self.buttonClicked)
+
+    def buttonClicked(self):
+        from list_client import Ui_List_Client
+        server = QtGui.QWidget()
+        ui = Ui_Choose()
+        ui.setupUi(server)
+        server.show()
 
