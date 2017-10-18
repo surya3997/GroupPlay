@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from list_client import Ui_List_Client
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -31,9 +32,13 @@ class Ui_Choose(object):
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
+        self.pushButton.clicked.connect(self.buttonClicked)
+
         self.pushButton_2 = QtGui.QPushButton(Form)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.gridLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
+        self.pushButton_2.clicked.connect(self.buttonClicked)
+
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 0, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -47,13 +52,9 @@ class Ui_Choose(object):
         self.pushButton.setText(_translate("Form", "Server", None))
         self.pushButton_2.setText(_translate("Form", "Client", None))
 
-        self.pushButton.clicked.connect(self.buttonClicked)
-        self.pushButton_2.clicked.connect(self.buttonClicked)
-
     def buttonClicked(self):
-        from list_client import Ui_List_Client
-        server = QtGui.QWidget()
-        ui = Ui_Choose()
-        ui.setupUi(server)
-        server.show()
+        self.server = QtGui.QWidget()
+        self.ui = Ui_List_Client()
+        self.ui.setupUi(self.server)
+        self.server.show()
 
