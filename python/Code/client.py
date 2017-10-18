@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+import socket
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -61,6 +62,11 @@ class Ui_Client(object):
         self.lineEdit_2.raise_()
         self.pushButton.raise_()
 
+        self.pushButton.clicked.connect(lambda: self.goBack(Form))
+        self.pushButton_2.clicked.connect(self.setIP)
+        self.pushButton_4.clicked.connect(self.setPort)
+        self.pushButton_5.clicked.connect(self.setMessage)
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -70,4 +76,34 @@ class Ui_Client(object):
         self.pushButton_4.setText(_translate("Form", "Port", None))
         self.pushButton_2.setText(_translate("Form", "IP", None))
         self.pushButton.setText(_translate("Form", "Back", None))
+        self.host = 'localhost'
+        self.port = 3997
 
+    def setIP(self):
+        self.host = self.lineEdit_2.text()
+        print("setIP")
+
+    def setPort(self):
+        try:
+            self.port = int(self.lineEdit_4.text())
+            print("setPort")
+        except:
+            pass
+
+    def setMessage(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        server_address = (self.host, self.port)
+        sock.connect(server_address)
+        self.message = self.lineEdit_5.text()
+
+        try:
+            sock.sendall(self.message.encode())
+        except:
+            print("Data is not sent properly!")
+        finally:
+            sock.close()
+
+    def goBack(self, Form):
+        Form.close()
+        # print("goBack")

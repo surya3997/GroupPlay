@@ -9,6 +9,7 @@
 from PyQt4 import QtCore, QtGui
 import socket
 import threading
+import sys
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -28,6 +29,9 @@ class Ui_List_Client(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(353, 300)
+
+        self.quitter = 0
+
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.pushButton = QtGui.QPushButton(Form)
@@ -47,6 +51,8 @@ class Ui_List_Client(object):
         
         self.gridLayout.addWidget(self.listWidget, 6, 0, 1, 1)
 
+        self.pushButton.clicked.connect(lambda: self.finish(Form))
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -60,9 +66,16 @@ class Ui_List_Client(object):
         self.counter = 0
 
         self.setupServer("", 3997)
-        threading.Thread(target = self.listen).start()
+        self.runServer = threading.Thread(target = self.listen)
         
+        self.runServer.daemon = True
+        self.runServer.start()
+
         self.listWidget.setSortingEnabled(__sortingEnabled)
+
+    def finish(self, Form):
+        Form.close()
+        sys.exit()
 
     def setupServer(self, host, port):
         self.host = host
@@ -75,16 +88,19 @@ class Ui_List_Client(object):
         self.sock.listen(5)
         print("Server listening...")
         while True:
+            if self.quitter == 1:
+                return
             client, address = self.sock.accept()
             client.settimeout(160)
-            threading.Thread(target = self.listenToClient, args = (client,address)).start()
+            sepClient = threading.Thread(target = self.listenToClient, args = (client,address))
+            sepClient.daemon = True
+            sepClient.start()
 
     def listenToClient(self, client, address):
         size = 1024
         while True:
             try:
                 data = client.recv(size)
-                print(data)
                 if data:
                     response = data.decode()
                     print(address[0], response) 
@@ -96,7 +112,9 @@ class Ui_List_Client(object):
                 else:
                     raise error('Client disconnected')
             except:
-                # print("Therla")
                 client.close()
                 return False
+
+    def __del__(self):
+        print("deleted")
 
