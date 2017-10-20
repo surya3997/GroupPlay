@@ -15,10 +15,9 @@ cnt = 0
 
 try:
     while count < total:
-        data = sock.recv(500000)
+        response = sock.recv(500000)
         print("in")
-        response = data
-
+        
         count += len(response)
         cnt += 1
         if response:
