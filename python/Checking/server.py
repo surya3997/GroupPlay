@@ -8,9 +8,6 @@ with open(path, 'rb') as f:
 
 print(len(text))
 
-##part1 = text[:int(len(text) / 2)]
-##part2 = text[int(len(text) / 2):]
-
 class ThreadedServer(object):
     def __init__(self, host, port):
         self.host = host
@@ -30,16 +27,7 @@ class ThreadedServer(object):
         size = 1024
         print("connected...")
         
-##        try:
-##        print(text[20000])
         client.send(text)
-##        except:
-##            print("no expect")
-##            client.close()
-##            return False
-
-##        while True:
-##            pass
 
 if __name__ == "__main__":
     port_num = 3997

@@ -1,21 +1,13 @@
+import vlc
+import time
 import socket
 
 host = 'localhost'
 port = 3997
 
-# from pygame import mixer
-import vlc
-import time
-
-##while True:
-    # Create a TCP Socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 server_address = (host, port)
-
 sock.connect(server_address)
-
-# message = input()
 
 total = 4671603
 count = 0
@@ -39,9 +31,7 @@ try:
             while True:
                if p.is_playing():
                    pass
-                #    print("playing")
                else:
-                #    print("Stopped")
                    break
 
 except:
