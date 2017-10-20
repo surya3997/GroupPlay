@@ -6,6 +6,8 @@ path = "./Thalli.mp3"
 with open(path, 'rb') as f:
     text = f.read()
 
+print(len(text))
+
 ##part1 = text[:int(len(text) / 2)]
 ##part2 = text[int(len(text) / 2):]
 
