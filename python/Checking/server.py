@@ -31,42 +31,49 @@ class ThreadedServer(object):
         threading.Thread(target = self.seek).start()
         while True:
             client, address = self.sock.accept()
-            client1, address1 = self.sock.accept()
+            client1, address1 = self.sock1.accept()
             client.settimeout(160)
             client1.settimeout(160)
             threading.Thread(target = self.listenToClient,args = (client,address)).start()
             threading.Thread(target = self.listenForFlag,args = (client1,address1)).start()
             self.listeners.append(client)
-            self.flagPort.append(client)
+            self.flagPort.append(client1)
 
     def seek(self):
         s = 0
+        self.check = 0
+        checkerUp = threading.Thread(target=self.checkUpdate)
+        checkerUp.daemon = True
+        checkerUp.start()
         while True:
             self.chunk = text[int((int(s) / 100) * len(text)):]
             for c in self.listeners:
                 c.send(self.chunk)
 
             s = input("percent : ")
-            check += 1
+            self.check += 1
+
+    def checkUpdate(self):
+        while True:
             for fc in self.flagPort:
-                fc.send(str(check).encode())
+                fc.send(str(self.check).encode())
 
     def listenToClient(self, client, address):
-        size = 1024
         print(str(address[0]) + ' : ' + str(address[1]), "connected")
         while True:
             connection = client.recv(10)
-            conn = connection.decode()
-            if not conn:
+            if not connection:
                 print(str(address[0]) + ' : ' + str(address[1]), "disconnected") 
                 self.listeners.remove(client)
+                break
 
     def listenForFlag(self, client, address):
         while True:
             connection = client.recv(10)
-            conn = connection.decode()
+            # client.send(str(self.check).encode())
             if not conn:
                 self.flagPort.remove(client)
+                break
 
         
 
