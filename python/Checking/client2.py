@@ -2,6 +2,7 @@ import vlc
 import time
 import socket
 import threading
+import sys
 
 host = 'localhost'
 port = 3997
@@ -21,8 +22,11 @@ cnt = 0
 
 counterUpdated = ''
 def checkUpdate():
+    global counterUpdated
     while True:
-        counterUpdated = sock1.recv(5).decode()
+        received = sock1.recv(1)
+        counterUpdated = received.decode()
+        print(counterUpdated)
 
 checkerUp = threading.Thread(target=checkUpdate)
 checkerUp.daemon = True
@@ -32,32 +36,34 @@ try:
     while True:
         # sock.send('1'.encode())
         # sock1.send('1'.encode())
+        counterOld = counterUpdated
         response = sock.recv(500000)
         print("in")
-        
-        # count += len(response)
+
         if cnt == 20:
             break
         if response:
-            cntr = sock1.recv(10000)
-            cntr = cntr.decode()
             with open('./testing' + '.mp3','wb') as output:
                 output.write(response)
 
             p = vlc.MediaPlayer("./testing" + ".mp3")
-            p.play()
+            try:
+                p.play()
+            except KeyboardInterrupt:
+                sys.exit(0)
+            except:
+                pass
             time.sleep(1)
-            while True:
-               if p.is_playing():
-                    cnter = sock1.recv(10000)
-                    cnter = cnter.decode()
-
-                    if cnter != cntr:
-                        p.stop()
-               else:
-                   break
+            while p.is_playing():
+                if counterOld != counterUpdated:
+                    # print(counterOld, ' ', counterUpdated)
+                    p.stop()
         else:
             cnt += 1
+
+    # counterOld = counterUpdated
+
+    # while coun
 
 except:
     print("Data is not received properly!")

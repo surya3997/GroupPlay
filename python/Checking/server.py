@@ -1,4 +1,5 @@
 import socket
+import time
 import threading
 
 path = "./Thalli.mp3"
@@ -28,14 +29,19 @@ class ThreadedServer(object):
     def listen(self):
         self.sock.listen(5)
         self.sock1.listen(5)
+        self.stopScan = 1
         threading.Thread(target = self.seek).start()
-        while True:
+        while self.stopScan:
             client, address = self.sock.accept()
             client1, address1 = self.sock1.accept()
             client.settimeout(160)
             client1.settimeout(160)
-            threading.Thread(target = self.listenToClient,args = (client,address)).start()
-            threading.Thread(target = self.listenForFlag,args = (client1,address1)).start()
+            clientListener = threading.Thread(target = self.listenToClient,args = (client,address))
+            clientListener.daemon = True
+            clientListener.start()
+            flagListener = threading.Thread(target = self.listenForFlag,args = (client1,address1))
+            flagListener.daemon = True
+            flagListener.start()
             self.listeners.append(client)
             self.flagPort.append(client1)
 
@@ -46,16 +52,21 @@ class ThreadedServer(object):
         checkerUp.daemon = True
         checkerUp.start()
         while True:
+            s = input("percent : ")
+            self.stopScan = 0
+            self.check += 1
+            self.check = self.check % 10
+            print(self.check)
             self.chunk = text[int((int(s) / 100) * len(text)):]
             for c in self.listeners:
                 c.send(self.chunk)
 
-            s = input("percent : ")
-            self.check += 1
 
     def checkUpdate(self):
         while True:
             for fc in self.flagPort:
+                print(self.check)
+                time.sleep(1)
                 fc.send(str(self.check).encode())
 
     def listenToClient(self, client, address):
