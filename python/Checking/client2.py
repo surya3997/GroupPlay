@@ -20,13 +20,13 @@ total = 4671603
 count = 0
 cnt = 0
 
-counterUpdated = ''
+counterUpdated = '1'
 def checkUpdate():
     global counterUpdated
     while True:
         received = sock1.recv(1)
         counterUpdated = received.decode()
-        print(counterUpdated)
+        # print(counterUpdated)
 
 checkerUp = threading.Thread(target=checkUpdate)
 checkerUp.daemon = True
@@ -37,12 +37,13 @@ try:
         # sock.send('1'.encode())
         # sock1.send('1'.encode())
         counterOld = counterUpdated
-        response = sock.recv(500000)
+        response = sock.recv(50000000)
         print("in")
 
         if cnt == 20:
             break
         if response:
+            print(len(response))
             with open('./testing' + '.mp3','wb') as output:
                 output.write(response)
 
@@ -54,10 +55,13 @@ try:
             except:
                 pass
             time.sleep(1)
-            while p.is_playing():
-                if counterOld != counterUpdated:
-                    # print(counterOld, ' ', counterUpdated)
-                    p.stop()
+            while True:
+                if p.is_playing():
+                    if counterOld != counterUpdated:
+                        # print(counterOld, ' ', counterUpdated)
+                        p.stop()
+                else:
+                    break
         else:
             cnt += 1
 
