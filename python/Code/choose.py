@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main.ui'
+# Form implementation generated from reading ui file '../UI/choose.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-from list_client import Ui_List_Client
-from client import Ui_Client
-import sys
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -25,9 +22,8 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Choose(object):
+class Ui_Form(object):
     def setupUi(self, Form):
-        self.serverStatus = 0
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(355, 305)
         self.gridLayout = QtGui.QGridLayout(Form)
@@ -35,13 +31,9 @@ class Ui_Choose(object):
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
-        self.pushButton.clicked.connect(self.clickedServer)
-
         self.pushButton_2 = QtGui.QPushButton(Form)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.gridLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
-        self.pushButton_2.clicked.connect(self.clickedClient)
-
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 0, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -52,25 +44,16 @@ class Ui_Choose(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Group Play", None))
-        self.pushButton.setText(_translate("Form", "Server", None))
-        self.pushButton_2.setText(_translate("Form", "Client", None))
+        self.pushButton.setText(_translate("Form", "Play song", None))
+        self.pushButton_2.setText(_translate("Form", "Listen", None))
 
-    def clickedServer(self):
-        if self.serverStatus == 0:
-            self.server = QtGui.QWidget()
-            self.server_ui = Ui_List_Client()
-            self.server_ui.setupUi(self.server)
-            self.serverStatus = 1
-            self.server.show()
-        else:
-            print("No")
 
-    def clickedClient(self):
-        if self.serverStatus == 1:
-            # self.server.close()
-            sys.exit()
-        self.client = QtGui.QWidget()
-        self.client_ui = Ui_Client()
-        self.client_ui.setupUi(self.client)
-        self.client.show()
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
 

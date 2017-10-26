@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../UI/list_client.ui'
+# Form implementation generated from reading ui file '../UI/list_songs.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -49,7 +49,7 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Listeners", None))
+        Form.setWindowTitle(_translate("Form", "Songs", None))
         self.pushButton.setText(_translate("Form", "Back", None))
         self.pushButton_3.setText(_translate("Form", "Proceed", None))
         __sortingEnabled = self.listWidget.isSortingEnabled()
@@ -59,7 +59,7 @@ class Ui_Form(object):
         item = self.listWidget.item(1)
         item.setText(_translate("Form", "New Item 1", None))
         self.listWidget.setSortingEnabled(__sortingEnabled)
-        self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Listeners</p></body></html>", None))
+        self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Choose song to stream</p></body></html>", None))
 
 
 if __name__ == "__main__":
