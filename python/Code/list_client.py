@@ -31,6 +31,9 @@ class Ui_List_Client(object):
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 7, 0, 1, 1)
+
+        self.pushButton.clicked.connect(lambda: self.stopServer(Form))
+
         self.pushButton_3 = QtGui.QPushButton(Form)
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         self.gridLayout.addWidget(self.pushButton_3, 6, 0, 1, 1)
@@ -60,6 +63,10 @@ class Ui_List_Client(object):
         item.setText(_translate("Form", "New Item 1", None))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Listeners</p></body></html>", None))
+
+    def stopServer(self, Form):
+        Form.close()
+        
 
 
 if __name__ == "__main__":
