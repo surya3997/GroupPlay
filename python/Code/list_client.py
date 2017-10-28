@@ -37,6 +37,9 @@ class Ui_List_Client(object):
         self.pushButton_3 = QtGui.QPushButton(Form)
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         self.gridLayout.addWidget(self.pushButton_3, 6, 0, 1, 1)
+
+        self.pushButton_3.clicked.connect(lambda: self.stopServer(Form))
+
         self.listWidget = QtGui.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
         item = QtGui.QListWidgetItem()

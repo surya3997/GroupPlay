@@ -22,7 +22,7 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Form(object):
+class Ui_Client(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(354, 300)
@@ -40,6 +40,9 @@ class Ui_Form(object):
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
+
+        self.pushButton.clicked.connect(lambda: self.stopClient(Form))
+
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.verticalLayout = QtGui.QVBoxLayout()
@@ -53,6 +56,9 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+    def stopClient(self, Form):
+        Form.close()
+
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Listening", None))
         self.pushButton_2.setText(_translate("Form", "IP", None))
@@ -64,7 +70,7 @@ if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
     Form = QtGui.QWidget()
-    ui = Ui_Form()
+    ui = Ui_Client()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
