@@ -87,8 +87,10 @@ class ThreadedMsgServer(object):
     def sendStatus(self):
         while True:
             reply = input("Enter status : ")
+            reply += ' '
             for i in self.listeners:
-                sendReply = reply.encode()
+                sendReply = reply.encode(encoding='UTF-8')
+                #print(sendReply)
                 i.send(sendReply)
 
 msgServer = ThreadedMsgServer('0.0.0.0', msgPort)

@@ -7,7 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-import socket
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -23,30 +22,12 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Client(object):
+class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(354, 300)
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.horizontalLayout_4 = QtGui.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.lineEdit_5 = QtGui.QLineEdit(Form)
-        self.lineEdit_5.setObjectName(_fromUtf8("lineEdit_5"))
-        self.horizontalLayout_4.addWidget(self.lineEdit_5)
-        self.pushButton_5 = QtGui.QPushButton(Form)
-        self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
-        self.horizontalLayout_4.addWidget(self.pushButton_5)
-        self.gridLayout.addLayout(self.horizontalLayout_4, 2, 0, 1, 1)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.lineEdit_4 = QtGui.QLineEdit(Form)
-        self.lineEdit_4.setObjectName(_fromUtf8("lineEdit_4"))
-        self.horizontalLayout_3.addWidget(self.lineEdit_4)
-        self.pushButton_4 = QtGui.QPushButton(Form)
-        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
-        self.horizontalLayout_3.addWidget(self.pushButton_4)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 1, 0, 1, 1)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.lineEdit_2 = QtGui.QLineEdit(Form)
@@ -58,52 +39,33 @@ class Ui_Client(object):
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.gridLayout.addWidget(self.pushButton, 3, 0, 1, 1)
-        self.lineEdit_2.raise_()
-        self.pushButton.raise_()
-
-        self.pushButton.clicked.connect(lambda: self.goBack(Form))
-        self.pushButton_2.clicked.connect(self.setIP)
-        self.pushButton_4.clicked.connect(self.setPort)
-        self.pushButton_5.clicked.connect(self.setMessage)
+        self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.label = QtGui.QLabel(Form)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.verticalLayout.addWidget(self.label)
+        self.horizontalLayout_4.addLayout(self.verticalLayout)
+        self.gridLayout.addLayout(self.horizontalLayout_4, 1, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Form", None))
-        self.pushButton_5.setText(_translate("Form", "Message", None))
-        self.pushButton_4.setText(_translate("Form", "Port", None))
+        Form.setWindowTitle(_translate("Form", "Listening", None))
         self.pushButton_2.setText(_translate("Form", "IP", None))
         self.pushButton.setText(_translate("Form", "Back", None))
-        self.host = 'localhost'
-        self.port = 3997
+        self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt; font-weight:600;\">STATUS</span></p></body></html>", None))
 
-    def setIP(self):
-        self.host = self.lineEdit_2.text()
-        print("setIP")
 
-    def setPort(self):
-        try:
-            self.port = int(self.lineEdit_4.text())
-            print("setPort")
-        except:
-            pass
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
 
-    def setMessage(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        server_address = (self.host, self.port)
-        sock.connect(server_address)
-        self.message = self.lineEdit_5.text()
-
-        try:
-            sock.sendall(self.message.encode())
-        except:
-            print("Data is not sent properly!")
-        finally:
-            sock.close()
-
-    def goBack(self, Form):
-        Form.close()
-        # print("goBack")
