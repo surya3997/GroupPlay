@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file '../UI/player.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt4 import QtCore, QtGui
+# from list_client import Ui_List_Client
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -22,7 +15,8 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Form(object):
+class Ui_Player(object):
+    stopServer = 1
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(648, 380)
@@ -34,6 +28,9 @@ class Ui_Form(object):
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 1)
+
+        self.pushButton.clicked.connect(lambda: self.stopPlayer(Form))
+
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.progressBar = QtGui.QProgressBar(Form)
@@ -87,12 +84,16 @@ class Ui_Form(object):
         item.setText(_translate("Form", "New Item 1", None))
         self.listWidget.setSortingEnabled(__sortingEnabled)
 
+    def stopPlayer(self, Form):
+        self.stopServer = False
+        Form.close()
+
 
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
     Form = QtGui.QWidget()
-    ui = Ui_Form()
+    ui = Ui_Player()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())

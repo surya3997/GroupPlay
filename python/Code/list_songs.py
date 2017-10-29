@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file '../UI/list_songs.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt4 import QtCore, QtGui
+from player import Ui_Player
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -22,7 +15,8 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Form(object):
+class Ui_Songs(object):
+    stopServer = 1
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(353, 300)
@@ -31,9 +25,15 @@ class Ui_Form(object):
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 7, 0, 1, 1)
+
+        self.pushButton.clicked.connect(lambda: self.stopSongsUi(Form))
+
         self.pushButton_3 = QtGui.QPushButton(Form)
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         self.gridLayout.addWidget(self.pushButton_3, 6, 0, 1, 1)
+
+        self.pushButton_3.clicked.connect(lambda: self.clickedPlayer(Form))
+
         self.listWidget = QtGui.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
         item = QtGui.QListWidgetItem()
@@ -61,12 +61,22 @@ class Ui_Form(object):
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Choose song to stream</p></body></html>", None))
 
+    def stopSongsUi(self, Form):
+        self.stopServer = False
+        Form.close()
+
+    def clickedPlayer(self, Form):
+        self.playerWidget = QtGui.QWidget()
+        self.player_ui = Ui_Player()
+        self.player_ui.setupUi(self.playerWidget)
+        Form.close()
+        self.playerWidget.show()
 
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
     Form = QtGui.QWidget()
-    ui = Ui_Form()
+    ui = Ui_Songs()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())

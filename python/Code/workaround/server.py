@@ -44,8 +44,6 @@ def startHTTPServer():
         print("\nShutting down server per users request.")
 
 httpStart = threading.Thread(target = startHTTPServer).start()
-
-
 msgPort = 3997
 
 class ThreadedMsgServer(object):

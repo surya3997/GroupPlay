@@ -56,7 +56,7 @@ class Ui_Choose(object):
             self.server_widget = QtGui.QWidget()
             self.server_ui = Ui_List_Client()
             self.server_ui.setupUi(self.server_widget)
-            self.serverStatus = 1
+            # self.serverStatus = 1
             self.server_widget.show()
         else:
             print("No")
