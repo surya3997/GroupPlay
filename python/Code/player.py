@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
-# from list_client import Ui_List_Client
+import threading, vlc, time
+from shutil import copyfile
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -17,7 +18,11 @@ except AttributeError:
 
 class Ui_Player(object):
     stopServer = 1
-    def setupUi(self, Form):
+    def setupUi(self, Form, rowIndex, fullPathList, songNameList):
+        self.playStatus = 0
+        self.rowIndex = rowIndex
+        self.fullPathList = fullPathList
+        self.songNameList = songNameList
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(648, 380)
         self.gridLayout = QtGui.QGridLayout(Form)
@@ -33,10 +38,14 @@ class Ui_Player(object):
 
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.progressBar = QtGui.QProgressBar(Form)
-        self.progressBar.setProperty("value", 24)
-        self.progressBar.setObjectName(_fromUtf8("progressBar"))
-        self.verticalLayout.addWidget(self.progressBar)
+
+        self.horizontalSlider = QtGui.QSlider(Form)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
+        self.verticalLayout.addWidget(self.horizontalSlider)
+
+        self.horizontalSlider.sliderReleased.connect(self.printPosition)
+
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.pushButton_4 = QtGui.QPushButton(Form)
@@ -58,14 +67,14 @@ class Ui_Player(object):
         self.gridLayout.addLayout(self.verticalLayout, 1, 0, 1, 1)
         self.listWidget = QtGui.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
-        item = QtGui.QListWidgetItem()
-        self.listWidget.addItem(item)
-        item = QtGui.QListWidgetItem()
-        self.listWidget.addItem(item)
+
         self.gridLayout.addWidget(self.listWidget, 2, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def printPosition(self):
+        print(self.horizontalSlider.value())
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Player", None))
@@ -73,21 +82,74 @@ class Ui_Player(object):
         self.pushButton.setText(_translate("Form", "Back", None))
         self.pushButton_4.setText(_translate("Form", "<<", None))
         self.pushButton_5.setText(_translate("Form", "<", None))
-        self.pushButton_6.setText(_translate("Form", "||", None))
+        self.pushButton_6.setText(_translate("Form", "|> / ||", None))
         self.pushButton_2.setText(_translate("Form", ">", None))
         self.pushButton_7.setText(_translate("Form", ">>", None))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
-        item = self.listWidget.item(0)
-        item.setText(_translate("Form", "New Item", None))
-        item = self.listWidget.item(1)
-        item.setText(_translate("Form", "New Item 1", None))
+
+        for index, itemName in enumerate(self.songNameList):
+            itemList = QtGui.QListWidgetItem()
+            self.listWidget.addItem(itemList)
+            item = self.listWidget.item(index)
+            item.setText(_translate("Form", itemName, None))
+
+        self.pushButton_6.clicked.connect(self.playSong)
+        self.copySong()
+        time.sleep(2)
+        self.vlcPlay = vlc.MediaPlayer("./song.mp3")
+
+        self.pushButton_2.clicked.connect(self.forward)
+        self.pushButton_5.clicked.connect(self.backward)
+        self.pushButton_7.clicked.connect(self.next)
+        self.pushButton_4.clicked.connect(self.previous)
+
         self.listWidget.setSortingEnabled(__sortingEnabled)
+    
+    def copySong(self):
+        copyfile(self.fullPathList[self.rowIndex], './song.mp3')
+        time.sleep(2)
 
     def stopPlayer(self, Form):
         self.stopServer = False
         Form.close()
 
+    def playSong(self):
+        if self.playStatus == 0:
+            self.vlcPlay.play()
+            self.playStatus = 1
+            # while True:
+            #     time.sleep(1)
+            #     self.horizontalSlider.setValue(round(self.vlcPlay.get_position() * 100))
+        else:
+            self.vlcPlay.pause()
+            self.playStatus = 0
+
+    def forward(self):
+        self.vlcPlay.set_position(self.vlcPlay.get_position() + 0.01)
+
+    def backward(self):
+        self.vlcPlay.set_position(self.vlcPlay.get_position() - 0.01)
+
+    def next(self):
+        if self.rowIndex < len(self.fullPathList) - 1:
+            self.rowIndex += 1
+            self.vlcPlay.stop()
+            self.playStatus = 0
+            self.copySong()
+            time.sleep(2)
+            self.vlcPlay = vlc.MediaPlayer("./song.mp3")
+            self.playSong()
+
+    def previous(self):
+        if self.rowIndex > 0:
+            self.rowIndex -= 1
+            self.vlcPlay.stop()
+            self.playStatus = 0
+            self.copySong()
+            time.sleep(2)
+            self.vlcPlay = vlc.MediaPlayer("./song.mp3")
+            self.playSong()
 
 if __name__ == "__main__":
     import sys

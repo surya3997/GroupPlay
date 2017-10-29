@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
 from player import Ui_Player
+import os
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -36,10 +37,12 @@ class Ui_Songs(object):
 
         self.listWidget = QtGui.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
-        item = QtGui.QListWidgetItem()
-        self.listWidget.addItem(item)
-        item = QtGui.QListWidgetItem()
-        self.listWidget.addItem(item)
+
+        # item = QtGui.QListWidgetItem()
+        # self.listWidget.addItem(item)
+        # item = QtGui.QListWidgetItem()
+        # self.listWidget.addItem(item)
+
         self.gridLayout.addWidget(self.listWidget, 5, 0, 1, 1)
         self.label = QtGui.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
@@ -54,10 +57,30 @@ class Ui_Songs(object):
         self.pushButton_3.setText(_translate("Form", "Proceed", None))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
-        item = self.listWidget.item(0)
-        item.setText(_translate("Form", "New Item", None))
-        item = self.listWidget.item(1)
-        item.setText(_translate("Form", "New Item 1", None))
+
+        path1 = """/media/surya/Base/Programs/PACKAGE/Acadamic/SEM 5/CN/repo/songs"""
+        x = [(i[0],i[2]) for i in os.walk(path1)]
+        self.name = []
+        self.fullPath = []
+        self.noSongs = 0
+        for t in x:
+            for f in t[1]:
+                if f[-3:] == 'mp3' or f[-3:] == 'MP3':
+                    self.name.append(f)
+                    self.fullPath.append(t[0] + '/' + f)
+
+                    itemList = QtGui.QListWidgetItem()
+                    self.listWidget.addItem(itemList)
+                    item = self.listWidget.item(self.noSongs)
+                    self.noSongs += 1
+                    item.setText(_translate("Form", f, None))
+                    # print(f)
+
+        # self.pushButton_3.clicked.connect(self.printSelectedSong)
+        
+        # item = self.listWidget.item(1)
+        # item.setText(_translate("Form", "New Item 1", None))
+
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Choose song to stream</p></body></html>", None))
 
@@ -65,10 +88,14 @@ class Ui_Songs(object):
         self.stopServer = False
         Form.close()
 
+    # def printSelectedSong(self):
+
     def clickedPlayer(self, Form):
+        print(self.listWidget.currentRow())
+        print(self.listWidget.currentItem().text())
         self.playerWidget = QtGui.QWidget()
         self.player_ui = Ui_Player()
-        self.player_ui.setupUi(self.playerWidget)
+        self.player_ui.setupUi(self.playerWidget, self.listWidget.currentRow(), self.fullPath, self.name)
         Form.close()
         self.playerWidget.show()
 

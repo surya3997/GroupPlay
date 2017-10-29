@@ -20,50 +20,50 @@ except AttributeError:
 host = '0.0.0.0'
 msgPort = 3997
 
-class ThreadedMsgServer(object):
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.sock.bind((self.host, self.port))
+# class ThreadedMsgServer(object):
+#     def __init__(self, host, port):
+#         self.host = host
+#         self.port = port
+#         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#         self.sock.bind((self.host, self.port))
 
-    def listen(self):
-        self.sock.listen(5)
-        self.stopScan = 1
-        self.listeners = []
-        while self.stopScan:
-            client, address = self.sock.accept()
-            self.listeners.append(client)
-            client.settimeout(160)
-            clientListener = threading.Thread(target = self.listenToClient,args = (client,address))
-            clientListener.daemon = True
-            clientListener.start()
-            s = input("stop? ")
-            if s == "yes":
-                self.stopScan = False
+#     def listen(self):
+#         self.sock.listen(5)
+#         self.stopScan = 1
+#         self.listeners = []
+#         while self.stopScan:
+#             client, address = self.sock.accept()
+#             self.listeners.append(client)
+#             client.settimeout(160)
+#             clientListener = threading.Thread(target = self.listenToClient,args = (client,address))
+#             clientListener.daemon = True
+#             clientListener.start()
+#             s = input("stop? ")
+#             if s == "yes":
+#                 self.stopScan = False
 
-        statusToClient = threading.Thread(target=self.sendStatus)
-        statusToClient.daemon = True
-        statusToClient.start()
-    def listenToClient(self, client, address):
-            print(str(address[0]) + ' : ' + str(address[1]), "connected")
+#         statusToClient = threading.Thread(target=self.sendStatus)
+#         statusToClient.daemon = True
+#         statusToClient.start()
+#     def listenToClient(self, client, address):
+#             print(str(address[0]) + ' : ' + str(address[1]), "connected")
             
-            while True:
-                connection = client.recv(1024)
-                if not connection:
-                    print(str(address[0]) + ' : ' + str(address[1]), "disconnected") 
-                    break
+#             while True:
+#                 connection = client.recv(1024)
+#                 if not connection:
+#                     print(str(address[0]) + ' : ' + str(address[1]), "disconnected") 
+#                     break
                         
 
-    def sendStatus(self):
-        while True:
-            reply = input("Enter status : ")
-            reply += ' '
-            for i in self.listeners:
-                sendReply = reply.encode(encoding='UTF-8')
-                #print(sendReply)
-                i.send(sendReply)
+#     def sendStatus(self):
+#         while True:
+#             reply = input("Enter status : ")
+#             reply += ' '
+#             for i in self.listeners:
+#                 sendReply = reply.encode(encoding='UTF-8')
+#                 #print(sendReply)
+#                 i.send(sendReply)
 
 
 class Ui_List_Client(object):
@@ -136,6 +136,7 @@ class Ui_List_Client(object):
                 # print(str(address[0]) + ' : ' + str(address[1]), "disconnected") 
                 item = self.listWidget.item(itemNo)
                 item.setText(_translate("Form", "Disconnected", None))
+                self.listeners.remove(client)
                 break
 
     def retranslateUi(self, Form):
