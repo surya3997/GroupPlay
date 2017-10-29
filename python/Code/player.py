@@ -2,6 +2,10 @@ from PyQt4 import QtCore, QtGui
 import threading, vlc, time
 from shutil import copyfile
 
+import sys, os, socket
+from socketserver import ThreadingMixIn
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -16,13 +20,27 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
+
+
+
+''' 
+message - 3997
+http - 8080
+
+'''
+
+class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
+    pass
+
 class Ui_Player(object):
     stopServer = 1
-    def setupUi(self, Form, rowIndex, fullPathList, songNameList):
-        self.playStatus = 0
+    def setupUi(self, Form, rowIndex, fullPathList, songNameList, listeners):
+        self.playStatus = 1
         self.rowIndex = rowIndex
         self.fullPathList = fullPathList
         self.songNameList = songNameList
+        self.listeners = listeners
+
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(648, 380)
         self.gridLayout = QtGui.QGridLayout(Form)
@@ -44,7 +62,7 @@ class Ui_Player(object):
         self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
         self.verticalLayout.addWidget(self.horizontalSlider)
 
-        self.horizontalSlider.sliderReleased.connect(self.printPosition)
+        self.horizontalSlider.sliderReleased.connect(self.seek)
 
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
@@ -70,8 +88,24 @@ class Ui_Player(object):
 
         self.gridLayout.addWidget(self.listWidget, 2, 0, 1, 1)
 
+        threading.Thread(target=self.startHTTPServer).start()
         self.retranslateUi(Form)
+        self.vlcPlay.play()
+        self.sendStatus("play 0")
         QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def startHTTPServer(self):
+        HOST = socket.gethostname()
+        PORT = 8080
+        CWD = os.getcwd()
+        server = ThreadingSimpleServer(('0.0.0.0', PORT), SimpleHTTPRequestHandler)
+        print("Serving HTTP traffic from", CWD, "on", HOST, "using port", PORT)
+        try:
+            while 1:
+                sys.stdout.flush()
+                server.handle_request()
+        except KeyboardInterrupt:
+            print("\nShutting down server per users request.")
 
     def printPosition(self):
         print(self.horizontalSlider.value())
@@ -114,21 +148,33 @@ class Ui_Player(object):
         self.stopServer = False
         Form.close()
 
+    def sendStatus(self, toSend):
+        reply = toSend
+        reply += ' '
+        for i in self.listeners:
+            sendReply = reply.encode(encoding='UTF-8')
+            #print(sendReply)
+            i.send(sendReply)
+
     def playSong(self):
         if self.playStatus == 0:
             self.vlcPlay.play()
             self.playStatus = 1
+            self.sendStatus("play 1")
             # while True:
             #     time.sleep(1)
             #     self.horizontalSlider.setValue(round(self.vlcPlay.get_position() * 100))
         else:
             self.vlcPlay.pause()
+            self.sendStatus("paus")
             self.playStatus = 0
 
     def forward(self):
+        self.sendStatus("fwrd 1")
         self.vlcPlay.set_position(self.vlcPlay.get_position() + 0.01)
 
     def backward(self):
+        self.sendStatus("bwrd 1")
         self.vlcPlay.set_position(self.vlcPlay.get_position() - 0.01)
 
     def next(self):
@@ -137,9 +183,13 @@ class Ui_Player(object):
             self.vlcPlay.stop()
             self.playStatus = 0
             self.copySong()
+            self.sendStatus("paus")
+            time.sleep(1)
+            self.sendStatus("play 0")
             time.sleep(2)
             self.vlcPlay = vlc.MediaPlayer("./song.mp3")
-            self.playSong()
+            self.vlcPlay.play()
+            self.playStatus = 1
 
     def previous(self):
         if self.rowIndex > 0:
@@ -147,9 +197,19 @@ class Ui_Player(object):
             self.vlcPlay.stop()
             self.playStatus = 0
             self.copySong()
+            self.sendStatus("paus")
+            time.sleep(1)
+            self.sendStatus("play 0")
             time.sleep(2)
             self.vlcPlay = vlc.MediaPlayer("./song.mp3")
-            self.playSong()
+            self.vlcPlay.play()
+            self.playStatus = 1
+
+    def seek(self):
+        value = self.horizontalSlider.value()
+        self.sendStatus("seek " + str(value))
+        self.vlcPlay.set_position(value / 100)
+        
 
 if __name__ == "__main__":
     import sys

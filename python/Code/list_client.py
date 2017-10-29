@@ -160,7 +160,7 @@ class Ui_List_Client(object):
     def clickedSongs(self, Form):
         self.songWidget = QtGui.QWidget()
         self.songs_ui = Ui_Songs()
-        self.songs_ui.setupUi(self.songWidget)
+        self.songs_ui.setupUi(self.songWidget, self.listeners)
         Form.close()
         self.sock.close()
         self.songWidget.show()

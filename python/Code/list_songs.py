@@ -18,9 +18,10 @@ except AttributeError:
 
 class Ui_Songs(object):
     stopServer = 1
-    def setupUi(self, Form):
+    def setupUi(self, Form, listeners):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(353, 300)
+        self.listeners = listeners
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.pushButton = QtGui.QPushButton(Form)
@@ -95,7 +96,7 @@ class Ui_Songs(object):
         print(self.listWidget.currentItem().text())
         self.playerWidget = QtGui.QWidget()
         self.player_ui = Ui_Player()
-        self.player_ui.setupUi(self.playerWidget, self.listWidget.currentRow(), self.fullPath, self.name)
+        self.player_ui.setupUi(self.playerWidget, self.listWidget.currentRow(), self.fullPath, self.name, self.listeners)
         Form.close()
         self.playerWidget.show()
 

@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'client.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt4 import QtCore, QtGui
+import vlc
+import socket, time
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -54,7 +48,85 @@ class Ui_Client(object):
         self.gridLayout.addLayout(self.horizontalLayout_4, 1, 0, 1, 1)
 
         self.retranslateUi(Form)
+
+        self.pushButton_2.clicked.connect(self.connectToIP)
+
         QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def connectToIP(self):
+        ip = self.lineEdit_2.text()
+        portsn=8080
+        portms=3997
+        ser_add=(ip,portms)
+
+        sock=socket.socket()
+        flag = 0
+        try:
+            sock.connect(ser_add)
+            flag = 1
+        except:
+            print("Server not ready!")
+
+        if flag == 1:
+            songname="song.mp3"
+            loc="http://"+ip+":"+str(portsn)+"/"+songname
+            req=sock.recv(1024);
+            songname="song.mp3"
+            a=req.decode()
+            print(a)
+            if a:
+                if(a[0:4]=="play"):
+                    p = vlc.MediaPlayer(loc)
+                    a=a.split();
+                    pos=float(a[1])
+                    p.set_position(pos)
+                    self.setStatusMsg("Playing...")
+                    p.play()
+                while(True):
+                    req=sock.recv(1024);
+                    a=req.decode()
+                    print(a)
+                    if a:
+                        if(a[0:4]=="play"):
+                            #global p
+                            a=a.split();
+                            if(a[1]=="0"):
+                                p.stop()
+                                time.sleep(2)
+                                p = vlc.MediaPlayer(loc)
+                                self.setStatusMsg("Playing...")
+                                p.play()
+                            else:
+                                self.setStatusMsg("Playing...")
+                                p.play()
+                        elif(a[0:4]=="paus"):
+                            #p = vlc.MediaPlayer(loc)
+                            self.setStatusMsg("Paused...")
+                            p.pause()
+
+                        elif(a[0:4]=="fwrd"):
+                            po=p.get_position();
+                            p.stop()
+                            p = vlc.MediaPlayer(loc)
+                            p.play()
+                            p.set_position(po+0.01)        
+                        elif(a[0:4]=="bwrd"):
+                            po=p.get_position();
+                            p.stop()
+                            p = vlc.MediaPlayer(loc)
+                            p.play()
+                            p.set_position(po-0.01)
+                        elif(a[0:4]=="seek"):
+                            a=a.split()
+                            po=p.get_position();
+                            po=int(a[1])/100
+
+                            p.stop()
+                            p = vlc.MediaPlayer(loc)
+                            p.play()
+                            p.set_position(po)
+                    else:
+                        break
 
     def stopClient(self, Form):
         Form.close()
@@ -63,7 +135,10 @@ class Ui_Client(object):
         Form.setWindowTitle(_translate("Form", "Listening", None))
         self.pushButton_2.setText(_translate("Form", "IP", None))
         self.pushButton.setText(_translate("Form", "Back", None))
-        self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt; font-weight:600;\">STATUS</span></p></body></html>", None))
+        self.setStatusMsg("STATUS")
+
+    def setStatusMsg(self, msg):
+        self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt; font-weight:600;\">" + msg + "</span></p></body></html>", None))
 
 
 if __name__ == "__main__":
