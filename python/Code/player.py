@@ -186,7 +186,7 @@ class Ui_Player(object):
             self.sendStatus("paus")
             time.sleep(1)
             self.sendStatus("play 0")
-            time.sleep(2)
+            time.sleep(1)
             self.vlcPlay = vlc.MediaPlayer("./song.mp3")
             self.vlcPlay.play()
             self.playStatus = 1
@@ -200,7 +200,7 @@ class Ui_Player(object):
             self.sendStatus("paus")
             time.sleep(1)
             self.sendStatus("play 0")
-            time.sleep(2)
+            time.sleep(1)
             self.vlcPlay = vlc.MediaPlayer("./song.mp3")
             self.vlcPlay.play()
             self.playStatus = 1
