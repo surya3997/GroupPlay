@@ -1,5 +1,5 @@
 # import winsound
-import vlc
+import vlcs
 import time
 import threading
 
@@ -13,7 +13,7 @@ def player(parts):
         with open('./testcheck'+ '.mp3', 'wb') as output:
             output.write(parts)
 
-        p = vlc.MediaPlayer("./testcheck" + ".mp3")
+        p = vlcs.MediaPlayer("./testcheck" + ".mp3")
         p.play()
         time.sleep(1)
         while True:
@@ -26,7 +26,7 @@ def player(parts):
 
 
 if __name__ == '__main__':
-    path = "/media/surya/Base/Programs/PACKAGE/Acadamic/SEM 5/CN/repo/GroupPlay/python/Checking/Thalli.mp3"
+    path = "./Thalli.mp3"
     with open(path, 'rb') as f:
         text = f.read()
         
