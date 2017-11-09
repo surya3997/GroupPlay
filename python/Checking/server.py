@@ -2,7 +2,7 @@ import socket
 import time
 import threading
 
-path = "./Thalli.mp3"
+path = "/media/surya/Entertainment/Songs/Collection/Indian/Telephone Manipol.mp3"
 
 with open(path, 'rb') as f:
     text = f.read()
@@ -56,16 +56,17 @@ class ThreadedServer(object):
             self.stopScan = 0
             self.check += 1
             self.check = self.check % 10
-            print(self.check)
+            # print(self.check)
             self.chunk = text[int((int(s) / 100) * len(text)):]
+            print(len(self.chunk))
             for c in self.listeners:
-                c.send(self.chunk)
+                c.sendall(self.chunk)
 
 
     def checkUpdate(self):
         while True:
             for fc in self.flagPort:
-                print(self.check)
+                # print(self.check)
                 time.sleep(1)
                 fc.send(str(self.check).encode())
 
@@ -82,7 +83,7 @@ class ThreadedServer(object):
         while True:
             connection = client.recv(10)
             # client.send(str(self.check).encode())
-            if not conn:
+            if not connection:
                 self.flagPort.remove(client)
                 break
 

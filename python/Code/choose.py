@@ -1,14 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'main.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt4 import QtCore, QtGui
-from list_client import Ui_List_Client
-from client import Ui_Client
+from list_client import Ui_List_Client        
+from client import Ui_Client        
 import sys
 
 try:
@@ -27,19 +19,23 @@ except AttributeError:
 
 class Ui_Choose(object):
     def setupUi(self, Form):
-        self.serverStatus = 0
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(355, 305)
+
+        self.serverStatus = 0
+        
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
+
         self.pushButton.clicked.connect(self.clickedServer)
 
         self.pushButton_2 = QtGui.QPushButton(Form)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.gridLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
+
         self.pushButton_2.clicked.connect(self.clickedClient)
 
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -52,16 +48,16 @@ class Ui_Choose(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Group Play", None))
-        self.pushButton.setText(_translate("Form", "Server", None))
-        self.pushButton_2.setText(_translate("Form", "Client", None))
+        self.pushButton.setText(_translate("Form", "Play song", None))
+        self.pushButton_2.setText(_translate("Form", "Listen", None))
 
     def clickedServer(self):
         if self.serverStatus == 0:
-            self.server = QtGui.QWidget()
+            self.server_widget = QtGui.QWidget()
             self.server_ui = Ui_List_Client()
-            self.server_ui.setupUi(self.server)
-            self.serverStatus = 1
-            self.server.show()
+            self.server_ui.setupUi(self.server_widget)
+            # self.serverStatus = 1
+            self.server_widget.show()
         else:
             print("No")
 
@@ -73,4 +69,15 @@ class Ui_Choose(object):
         self.client_ui = Ui_Client()
         self.client_ui.setupUi(self.client)
         self.client.show()
+
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    ui = Ui_Choose()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
 

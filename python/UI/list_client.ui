@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Listeners</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="7" column="0">
@@ -21,21 +21,14 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>Port</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="6" column="0">
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="text">
+      <string>Proceed</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
     <widget class="QListWidget" name="listWidget">
      <item>
       <property name="text">
@@ -47,6 +40,13 @@
        <string>New Item 1</string>
       </property>
      </item>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Listeners&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
     </widget>
    </item>
   </layout>
