@@ -39,11 +39,6 @@ class Ui_Songs(object):
         self.listWidget = QtGui.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
 
-        # item = QtGui.QListWidgetItem()
-        # self.listWidget.addItem(item)
-        # item = QtGui.QListWidgetItem()
-        # self.listWidget.addItem(item)
-
         self.gridLayout.addWidget(self.listWidget, 5, 0, 1, 1)
         self.label = QtGui.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
@@ -59,7 +54,7 @@ class Ui_Songs(object):
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
 
-        path1 = """/media/surya/Base/Programs/PACKAGE/Acadamic/SEM 5/CN/repo/songs"""
+        path1 = "/"
         x = [(i[0],i[2]) for i in os.walk(path1)]
         self.name = []
         self.fullPath = []
@@ -75,12 +70,6 @@ class Ui_Songs(object):
                     item = self.listWidget.item(self.noSongs)
                     self.noSongs += 1
                     item.setText(_translate("Form", f, None))
-                    # print(f)
-
-        # self.pushButton_3.clicked.connect(self.printSelectedSong)
-        
-        # item = self.listWidget.item(1)
-        # item.setText(_translate("Form", "New Item 1", None))
 
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Choose song to stream</p></body></html>", None))
