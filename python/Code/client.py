@@ -88,7 +88,6 @@ class Ui_Client(object):
                     print(a)
                     if a:
                         if(a[0:4]=="play"):
-                            #global p
                             a=a.split();
                             if(a[1]=="0"):
                                 p.stop()
@@ -100,7 +99,6 @@ class Ui_Client(object):
                                 self.setStatusMsg("Playing...")
                                 p.play()
                         elif(a[0:4]=="paus"):
-                            #p = vlc.MediaPlayer(loc)
                             self.setStatusMsg("Paused...")
                             p.pause()
 
@@ -120,7 +118,6 @@ class Ui_Client(object):
                             a=a.split()
                             po=p.get_position();
                             po=int(a[1])/100
-
                             p.stop()
                             p = vlc.MediaPlayer(loc)
                             p.play()

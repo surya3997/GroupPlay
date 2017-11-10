@@ -78,8 +78,6 @@ class Ui_Songs(object):
         self.stopServer = False
         Form.close()
 
-    # def printSelectedSong(self):
-
     def clickedPlayer(self, Form):
         print(self.listWidget.currentRow())
         print(self.listWidget.currentItem().text())

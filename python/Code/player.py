@@ -20,13 +20,9 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-
-
-
 ''' 
 message - 3997
 http - 8080
-
 '''
 
 class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
@@ -153,7 +149,6 @@ class Ui_Player(object):
         reply += ' '
         for i in self.listeners:
             sendReply = reply.encode(encoding='UTF-8')
-            #print(sendReply)
             i.send(sendReply)
 
     def playSong(self):
@@ -161,9 +156,6 @@ class Ui_Player(object):
             self.vlcPlay.play()
             self.playStatus = 1
             self.sendStatus("play 1")
-            # while True:
-            #     time.sleep(1)
-            #     self.horizontalSlider.setValue(round(self.vlcPlay.get_position() * 100))
         else:
             self.vlcPlay.pause()
             self.sendStatus("paus")

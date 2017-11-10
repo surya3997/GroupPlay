@@ -20,52 +20,6 @@ except AttributeError:
 host = '0.0.0.0'
 msgPort = 3997
 
-# class ThreadedMsgServer(object):
-#     def __init__(self, host, port):
-#         self.host = host
-#         self.port = port
-#         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-#         self.sock.bind((self.host, self.port))
-
-#     def listen(self):
-#         self.sock.listen(5)
-#         self.stopScan = 1
-#         self.listeners = []
-#         while self.stopScan:
-#             client, address = self.sock.accept()
-#             self.listeners.append(client)
-#             client.settimeout(160)
-#             clientListener = threading.Thread(target = self.listenToClient,args = (client,address))
-#             clientListener.daemon = True
-#             clientListener.start()
-#             s = input("stop? ")
-#             if s == "yes":
-#                 self.stopScan = False
-
-#         statusToClient = threading.Thread(target=self.sendStatus)
-#         statusToClient.daemon = True
-#         statusToClient.start()
-#     def listenToClient(self, client, address):
-#             print(str(address[0]) + ' : ' + str(address[1]), "connected")
-            
-#             while True:
-#                 connection = client.recv(1024)
-#                 if not connection:
-#                     print(str(address[0]) + ' : ' + str(address[1]), "disconnected") 
-#                     break
-                        
-
-#     def sendStatus(self):
-#         while True:
-#             reply = input("Enter status : ")
-#             reply += ' '
-#             for i in self.listeners:
-#                 sendReply = reply.encode(encoding='UTF-8')
-#                 #print(sendReply)
-#                 i.send(sendReply)
-
-
 class Ui_List_Client(object):
     stopServer = 1
     def setupUi(self, Form):
@@ -128,7 +82,7 @@ class Ui_List_Client(object):
         self.noClients += 1
         item = self.listWidget.item(itemNo)
         item.setText(_translate("Form", str(address[0]) + ' : ' + str(address[1]), None))
-
+        
         # print(str(address[0]) + ' : ' + str(address[1]), "connected")
         while True:
             connection = client.recv(1024)
@@ -146,9 +100,6 @@ class Ui_List_Client(object):
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
 
-        # item = self.listWidget.item(0)
-        # item.setText(_translate("Form", "New Item", None))
-
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.label.setText(_translate("Form", "<html><head/><body><p align=\"center\">Listeners</p></body></html>", None))
 
@@ -164,8 +115,6 @@ class Ui_List_Client(object):
         Form.close()
         self.sock.close()
         self.songWidget.show()
-        
-
 
 if __name__ == "__main__":
     import sys
@@ -175,4 +124,3 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
-
