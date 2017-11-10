@@ -1,3 +1,3 @@
 # GroupPlay
 
-This is for Testing!
+Run main.py in python/Code directory!

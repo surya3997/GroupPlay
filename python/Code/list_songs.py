@@ -54,7 +54,7 @@ class Ui_Songs(object):
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
 
-        path1 = "/"
+        path1 = "./"
         x = [(i[0],i[2]) for i in os.walk(path1)]
         self.name = []
         self.fullPath = []
