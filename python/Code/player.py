@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 import threading, vlc, time
 from shutil import copyfile
 
@@ -13,12 +13,12 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 ''' 
 message - 3997
@@ -39,47 +39,47 @@ class Ui_Player(object):
 
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(648, 380)
-        self.gridLayout = QtGui.QGridLayout(Form)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.label = QtGui.QLabel(Form)
+        self.label = QtWidgets.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.pushButton = QtGui.QPushButton(Form)
+        self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 1)
 
         self.pushButton.clicked.connect(lambda: self.stopPlayer(Form))
 
-        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
 
-        self.horizontalSlider = QtGui.QSlider(Form)
+        self.horizontalSlider = QtWidgets.QSlider(Form)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
         self.verticalLayout.addWidget(self.horizontalSlider)
 
         self.horizontalSlider.sliderReleased.connect(self.seek)
 
-        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.pushButton_4 = QtGui.QPushButton(Form)
+        self.pushButton_4 = QtWidgets.QPushButton(Form)
         self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
         self.horizontalLayout.addWidget(self.pushButton_4)
-        self.pushButton_5 = QtGui.QPushButton(Form)
+        self.pushButton_5 = QtWidgets.QPushButton(Form)
         self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
         self.horizontalLayout.addWidget(self.pushButton_5)
-        self.pushButton_6 = QtGui.QPushButton(Form)
+        self.pushButton_6 = QtWidgets.QPushButton(Form)
         self.pushButton_6.setObjectName(_fromUtf8("pushButton_6"))
         self.horizontalLayout.addWidget(self.pushButton_6)
-        self.pushButton_2 = QtGui.QPushButton(Form)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.horizontalLayout.addWidget(self.pushButton_2)
-        self.pushButton_7 = QtGui.QPushButton(Form)
+        self.pushButton_7 = QtWidgets.QPushButton(Form)
         self.pushButton_7.setObjectName(_fromUtf8("pushButton_7"))
         self.horizontalLayout.addWidget(self.pushButton_7)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.gridLayout.addLayout(self.verticalLayout, 1, 0, 1, 1)
-        self.listWidget = QtGui.QListWidget(Form)
+        self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
 
         self.gridLayout.addWidget(self.listWidget, 2, 0, 1, 1)
@@ -119,7 +119,7 @@ class Ui_Player(object):
         self.listWidget.setSortingEnabled(False)
 
         for index, itemName in enumerate(self.songNameList):
-            itemList = QtGui.QListWidgetItem()
+            itemList = QtWidgets.QListWidgetItem()
             self.listWidget.addItem(itemList)
             item = self.listWidget.item(index)
             item.setText(_translate("Form", itemName, None))
@@ -205,8 +205,8 @@ class Ui_Player(object):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
     ui = Ui_Player()
     ui.setupUi(Form)
     Form.show()

@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 import vlc
 import socket, time
 
@@ -9,39 +9,39 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 class Ui_Client(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(354, 300)
-        self.gridLayout = QtGui.QGridLayout(Form)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.lineEdit_2 = QtGui.QLineEdit(Form)
+        self.lineEdit_2 = QtWidgets.QLineEdit(Form)
         self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
         self.horizontalLayout.addWidget(self.lineEdit_2)
-        self.pushButton_2 = QtGui.QPushButton(Form)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.horizontalLayout.addWidget(self.pushButton_2)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        self.pushButton = QtGui.QPushButton(Form)
+        self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
 
         self.pushButton.clicked.connect(lambda: self.stopClient(Form))
 
-        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.label = QtGui.QLabel(Form)
+        self.label = QtWidgets.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout_4.addLayout(self.verticalLayout)
@@ -140,8 +140,8 @@ class Ui_Client(object):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
     ui = Ui_Client()
     ui.setupUi(Form)
     Form.show()

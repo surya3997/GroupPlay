@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from player import Ui_Player
 import os
 
@@ -9,12 +9,12 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 class Ui_Songs(object):
     stopServer = 1
@@ -22,25 +22,25 @@ class Ui_Songs(object):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(353, 300)
         self.listeners = listeners
-        self.gridLayout = QtGui.QGridLayout(Form)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.pushButton = QtGui.QPushButton(Form)
+        self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 7, 0, 1, 1)
 
         self.pushButton.clicked.connect(lambda: self.stopSongsUi(Form))
 
-        self.pushButton_3 = QtGui.QPushButton(Form)
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         self.gridLayout.addWidget(self.pushButton_3, 6, 0, 1, 1)
 
         self.pushButton_3.clicked.connect(lambda: self.clickedPlayer(Form))
 
-        self.listWidget = QtGui.QListWidget(Form)
+        self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
 
         self.gridLayout.addWidget(self.listWidget, 5, 0, 1, 1)
-        self.label = QtGui.QLabel(Form)
+        self.label = QtWidgets.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
@@ -65,7 +65,7 @@ class Ui_Songs(object):
                     self.name.append(f)
                     self.fullPath.append(t[0] + '/' + f)
 
-                    itemList = QtGui.QListWidgetItem()
+                    itemList = QtWidgets.QListWidgetItem()
                     self.listWidget.addItem(itemList)
                     item = self.listWidget.item(self.noSongs)
                     self.noSongs += 1
@@ -81,7 +81,7 @@ class Ui_Songs(object):
     def clickedPlayer(self, Form):
         print(self.listWidget.currentRow())
         print(self.listWidget.currentItem().text())
-        self.playerWidget = QtGui.QWidget()
+        self.playerWidget = QtWidgets.QWidget()
         self.player_ui = Ui_Player()
         self.player_ui.setupUi(self.playerWidget, self.listWidget.currentRow(), self.fullPath, self.name, self.listeners)
         Form.close()
@@ -89,8 +89,8 @@ class Ui_Songs(object):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
     ui = Ui_Songs()
     ui.setupUi(Form)
     Form.show()

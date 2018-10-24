@@ -1,10 +1,10 @@
 from choose import Ui_Choose
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
     ui = Ui_Choose()
     ui.setupUi(Form)
     Form.show()
