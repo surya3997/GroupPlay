@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from list_songs import Ui_Songs
 from player import Ui_Player
 import sys, os, socket, threading
@@ -10,12 +10,12 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 host = '0.0.0.0'
 msgPort = 3997
@@ -28,25 +28,25 @@ class Ui_List_Client(object):
 
         self.noClients = 0
 
-        self.gridLayout = QtGui.QGridLayout(Form)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.pushButton = QtGui.QPushButton(Form)
+        self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.gridLayout.addWidget(self.pushButton, 7, 0, 1, 1)
 
         self.pushButton.clicked.connect(lambda: self.stopServer(Form))
 
-        self.pushButton_3 = QtGui.QPushButton(Form)
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         self.gridLayout.addWidget(self.pushButton_3, 6, 0, 1, 1)
 
         self.pushButton_3.clicked.connect(lambda: self.clickedSongs(Form))
 
-        self.listWidget = QtGui.QListWidget(Form)
+        self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
 
         self.gridLayout.addWidget(self.listWidget, 5, 0, 1, 1)
-        self.label = QtGui.QLabel(Form)
+        self.label = QtWidgets.QLabel(Form)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
@@ -76,7 +76,7 @@ class Ui_List_Client(object):
         print("server stopped listening!")
 
     def listenToClient(self, client, address):
-        listItem = QtGui.QListWidgetItem()
+        listItem = QtWidgets.QListWidgetItem()
         self.listWidget.addItem(listItem)
         itemNo = self.noClients
         self.noClients += 1
@@ -109,7 +109,7 @@ class Ui_List_Client(object):
         Form.close()
 
     def clickedSongs(self, Form):
-        self.songWidget = QtGui.QWidget()
+        self.songWidget = QtWidgets.QWidget()
         self.songs_ui = Ui_Songs()
         self.songs_ui.setupUi(self.songWidget, self.listeners)
         Form.close()
@@ -118,8 +118,8 @@ class Ui_List_Client(object):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
     ui = Ui_List_Client()
     ui.setupUi(Form)
     Form.show()

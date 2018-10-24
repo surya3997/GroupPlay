@@ -1,1 +1,4 @@
 python/Code/song.mp3
+*.pyc
+.venv/
+.vscode/
