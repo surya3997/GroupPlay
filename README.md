@@ -2,7 +2,7 @@
     Uses http server and socket server to synchronously play songs to several devices connected in the same network.
 
 ## Pre-requisites
-    PyQt-4
+    PyQt-5
     python-vlc
 
 
